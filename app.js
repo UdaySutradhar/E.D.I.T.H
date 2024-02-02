@@ -53,8 +53,8 @@ btn.addEventListener('click', ()=>{
 })
 
 function takeCommand(message){
-    if(message.includes('hey') || message.includes('hello') || message.includes('edith')){
-        speak("Hello Sir, How May I Help You?");
+    if(message.includes('hey') || message.includes('hello')){
+        speak("Hello Uday Sir, How May I Help You?");
     }
     else if(message.includes("open google")){
         window.open("https://google.com", "_blank");
@@ -69,7 +69,7 @@ function takeCommand(message){
         speak("Opening Facebook...")
     }
     else if(message.includes("what is your name")){
-        speak("I am EDITH, your virtual assistant at your service")
+        speak("Allow me to introduce myself, I am EDITH, The virtual Artificial Intelligence, And I am here to assist you with a variety of task as best I can. 24 hours a day and 7 days a week, No I am fully operational. ")
     }
     else if(message.includes("what is the full form of edit")){
         speak("It is Even Dead I AM The Hero")

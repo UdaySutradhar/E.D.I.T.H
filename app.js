@@ -5,9 +5,9 @@ const content = document.querySelector('.content')
 function speak(text){
     const text_speak = new SpeechSynthesisUtterance(text);
 
-    text_speak.rate = 2;
-    text_speak.volume = 5;
-    text_speak.pitch = 5;
+    text_speak.rate = 1;
+    text_speak.volume = 10;
+    text_speak.pitch = 3;
 
     window.speechSynthesis.speak(text_speak);
 }
@@ -25,7 +25,7 @@ function wishMe(){
     }
 
     else{
-        speak("Good Evenining Sir...")
+        speak("Goooood..Evenining Sir...")
     }
 
 }

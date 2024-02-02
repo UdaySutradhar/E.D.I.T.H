@@ -30,7 +30,7 @@ function wishMe(){
 
 }
 window.addEventListener('load', ()=>{
-    speak("Initializing EDITH..");
+    speak("Initializing JARVIS..");
     wishMe();
 });
 

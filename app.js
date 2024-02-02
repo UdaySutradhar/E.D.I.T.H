@@ -71,7 +71,7 @@ function takeCommand(message){
     else if(message.includes("what is your name")){
         speak("I am EDITH, your virtual assistant at your service")
     }
-    else if(message.includes("what is the full form of edith")){
+    else if(message.includes("what is the full form of edit")){
         speak("It is Even Dead I AM The Hero")
     }
 

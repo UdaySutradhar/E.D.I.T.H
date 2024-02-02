@@ -11,7 +11,7 @@ function speak(text){
 
     window.speechSynthesis.speak(text_speak);
 }
-async function fetchJoke() {
+function fetchJoke() {
     try {
         const response = await fetch('https://v2.jokeapi.dev/joke/Any');
         const data = await response.json();
@@ -27,7 +27,7 @@ async function fetchJoke() {
     }
 }
 
-async function fetchFact() {
+function fetchFact() {
     try {
         const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
         const data = await response.json();
@@ -156,9 +156,9 @@ function takeCommand(message){
             .catch(error => console.error('Error fetching news:', error));
     }
     else if (message.includes('calculate')) {
-        // You can implement a simple calculator for basic calculations.
+        
         const expression = message.replace('calculate', '').trim();
-        const result = eval(expression); // Use eval with caution and sanitize inputs in a production environment.
+        const result = eval(expression); 
         speak(`The result of ${expression} is: ${result}`);
     }
 

@@ -4,19 +4,14 @@ const content = document.querySelector('.content')
 
 function speak(text){
     const text_speak = new SpeechSynthesisUtterance(text);
-    text_speak.rate = 1;
+
+    text_speak.rate = 1.1;
     text_speak.volume = 1;
-    text_speak.pitch = 10;
-
-
-   window.speechSynthesis.speak(text_speak);
-
-    text_speak.rate = 2;
-    text_speak.volume = 5;
-    text_speak.pitch = 10;
+    text_speak.pitch = 2;
 
     window.speechSynthesis.speak(text_speak);
 }
+
 function wishMe(){
     var day = new Date();
     var hour = day.getHours();
@@ -26,21 +21,19 @@ function wishMe(){
     }
 
     else if(hour>12 && hour<17){
-        speak("Good Afternoon Boss...")
+        speak("Good Afternoon Master...")
     }
 
     else{
-        speak("Good Evening Boss...")
+        speak("Good Evenining Sir...")
     }
 
 }
-window.addEventListener('load', () => {
-    window.speechSynthesis.onvoiceschanged = function () {
-        speak("Initializing EDITH...");
-        wishMe();
-    };
-});
 
+window.addEventListener('load', ()=>{
+    speak("Initializing EDITH..");
+    wishMe();
+});
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 

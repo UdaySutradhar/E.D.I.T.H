@@ -6,9 +6,16 @@ function speak(text){
     const text_speak = new SpeechSynthesisUtterance(text);
     text_speak.rate = 1;
     text_speak.volume = 1;
-    text_speak.pitch = 2;
+    text_speak.pitch = 10;
+
 
    window.speechSynthesis.speak(text_speak);
+
+    text_speak.rate = 2;
+    text_speak.volume = 5;
+    text_speak.pitch = 10;
+
+    window.speechSynthesis.speak(text_speak);
 }
 function wishMe(){
     var day = new Date();

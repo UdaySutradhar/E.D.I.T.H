@@ -53,35 +53,25 @@ function calculateExpression(expression) {
         throw new Error('Failed to calculate expression');
     }
 }
-
 function findRoots(equation) {
     try {
         if (/^[0-9xX^+\-*/().\s]+$/.test(equation)) {
-            const quadraticPattern = /([+-]?\d*)\s*[xX]\s*?\^2\s*([+-]?\d*)\s*[xX]\s*([+-]?\d*)\s*=\s*0/i;
-            const cubicPattern = /([+-]?\d*)\s*[xX]\s*?\^3\s*([+-]?\d*)\s*[xX]\s*?\^2\s*([+-]?\d*)\s*[xX]\s*([+-]?\d*)\s*=\s*0/i;
+            const squareRootPattern = /\sqrt\s*\(\s*([+-]?\d*\.*\d*)\s*\)/i;
+            const cubicRootPattern = /\^(3?)\s*\(\s*([+-]?\d*\.*\d*)\s*\)/i;
 
-            let coefficients;
-
-            if (quadraticPattern.test(equation)) {
-                coefficients = equation.match(quadraticPattern).slice(1).map(Number);
-                const [a, b, c] = coefficients;
-                const discriminant = b ** 2 - 4 * a * c;
-                const roots = [];
-                
-                if (discriminant >= 0) {
-                    roots.push((-b + Math.sqrt(discriminant)) / (2 * a));
-                    roots.push((-b - Math.sqrt(discriminant)) / (2 * a));
-                }
-
-                return roots;
-            } else if (cubicPattern.test(equation)) {
-                coefficients = equation.match(cubicPattern).slice(1).map(Number);
-                const [a, b, c, d] = coefficients;
-                const roots = findCubicRoots(a, b, c, d);
-                return roots;
-            } else {
-                throw new Error('Unsupported equation type');
+            let match;
+            let result = equation;
+            while ((match = squareRootPattern.exec(result)) !== null) {
+                const [, value] = match;
+                const rootValue = Math.sqrt(parseFloat(value));
+                result = result.replace(match[0], rootValue);
             }
+            while ((match = cubicRootPattern.exec(result)) !== null) {
+                const [, root, value] = match;
+                const rootValue = root === '3' ? Math.cbrt(parseFloat(value)) : Math.sqrt(parseFloat(value));
+                result = result.replace(match[0], rootValue);
+            }
+            return result;
         } else {
             throw new Error('Invalid equation');
         }
@@ -89,24 +79,6 @@ function findRoots(equation) {
         console.error('Error finding roots:', error);
         throw new Error('Failed to find roots');
     }
-}
-
-function findCubicRoots(a, b, c, d) {
-    const roots = [];
-
-    const delta0 = c / a - (b ** 2) / (3 * a ** 2);
-    const delta1 = 2 * (b ** 3) / (27 * a ** 3) - b * c / (3 * a ** 2) + d / a;
-
-    const Q = Math.cbrt(delta1 / 2 + Math.sqrt((delta1 / 2) ** 2 + (delta0 / 3) ** 3));
-    const S = Math.cbrt(delta1 / 2 - Math.sqrt((delta1 / 2) ** 2 + (delta0 / 3) ** 3));
-
-    const rootsSum = -b / (3 * a);
-
-    roots.push(Q + S + rootsSum);
-    roots.push(-((Q + S) / 2) + rootsSum + ((Q - S) * Math.sqrt(3)) / 2);
-    roots.push(-((Q + S) / 2) + rootsSum - ((Q - S) * Math.sqrt(3)) / 2);
-
-    return roots;
 }
 
 function solveTrigonometricEquation(equation) {
@@ -435,7 +407,7 @@ function takeCommand(message){
     else if (message.includes('joke') || message.includes('tell me another joke')) {
         fetchJoke().then(joke => speak(joke));
     }
-    else if (message.includes('what is the capital of')) {
+    else if (message.includes('capital of')) {
         const countryToCheck = message.replace('capital of', '').trim();
         const capital = getCapital(countryToCheck);
     

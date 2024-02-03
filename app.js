@@ -101,7 +101,7 @@ function takeCommand(message){
     if(message.includes('hey') || message.includes('hello')){
         speak("Hello Uday Sir, How May I Help You?");
     }
-    if(message.includes('what can you do for me')){
+    if(message.includes('what can you do')){
         speak("I will do the most complex tasks for you without you using your hands. Just command what you want sir");
     }
     else if(message.includes("open google")){
@@ -135,7 +135,7 @@ function takeCommand(message){
             speak("I couldn't understand the timer duration.");
         }
     }
-    else if(message.includes("what is the full form of E.D.I.T.H")){
+    else if(message.includes("what is the full form of your name")){
         speak("It is Even Dead I AM The Hero")
     }
 

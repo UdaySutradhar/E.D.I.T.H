@@ -47,11 +47,12 @@ async function fetchAndSpeakNews() {
         const data = await response.json();
 
         const articles = data.articles.slice(0, 3);
-        articles.forEach(article => {
-            speak(article.title);
-        });
+        const firstArticleTitle = articles[0].title;
+        speak(firstArticleTitle);
+        return articles[0];
     } catch (error) {
         handleNewsError(error);
+        return null;
     }
 }
 
@@ -162,7 +163,13 @@ function takeCommand(message){
         speak(finalText);
     }
     else if (message.includes('news') || message.includes('tell me another news')) {
-        fetchAndSpeakNews().then(articles => speak(`So todays news is: ${article}`));
+        fetchAndSpeakNews().then(article => {
+            if (article) {
+                speak(`So today's news is: ${article.title}`);
+            } else {
+                speak("Sorry, I couldn't fetch the news at the moment.");
+            }
+        });
     }
     else if (message.includes('calculate')) {
         

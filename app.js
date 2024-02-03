@@ -11,33 +11,7 @@ function speak(text){
 
     window.speechSynthesis.speak(text_speak);
 }
-function fetchJoke() {
-    try {
-        const response = await fetch('https://v2.jokeapi.dev/joke/Any');
-        const data = await response.json();
 
-        if (data.type === 'single') {
-            return data.joke;
-        } else {
-            return `${data.setup} ${data.delivery}`;
-        }
-    } catch (error) {
-        console.error('Error fetching joke:', error);
-        return "I'm sorry, I couldn't fetch a joke at the moment.";
-    }
-}
-
-function fetchFact() {
-    try {
-        const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-        const data = await response.json();
-
-        return data.text;
-    } catch (error) {
-        console.error('Error fetching fact:', error);
-        return "I'm sorry, I couldn't fetch a fact at the moment.";
-    }
-}
 function wishMe(){
     var day = new Date();
     var hour = day.getHours();
@@ -79,8 +53,8 @@ btn.addEventListener('click', ()=>{
 })
 
 function takeCommand(message){
-    if(message.includes('hey') || message.includes('hello')){
-        speak("Hello Uday Sir, How May I Help You?");
+    if(message.includes('hey') || message.includes('hello') || message.includes('edith')){
+        speak("Hello Sir, How May I Help You?");
     }
     else if(message.includes("open google")){
         window.open("https://google.com", "_blank");
@@ -90,30 +64,14 @@ function takeCommand(message){
         window.open("https://youtube.com", "_blank");
         speak("Opening Youtube...")
     }
-    else if (message.includes('joke')) {
-        fetchJoke().then(joke => speak(joke));
-    }
-
-    else if (message.includes('tell me a fact')) {
-        fetchFact().then(fact => speak(fact));
-    }
     else if(message.includes("open facebook")){
         window.open("https://facebook.com", "_blank");
         speak("Opening Facebook...")
     }
     else if(message.includes("what is your name")){
-        speak("Allow me to introduce myself, I am EDITH, The virtual Artificial Intelligence, And I am here to assist you with a variety of task as best I can. 24 hours a day and 7 days a week, No I am fully operational. ")
+        speak("I am EDITH, your virtual assistant at your service")
     }
-    else if (message.includes('timer')) {
-        const time = parseInt(message.match(/\d+/)[0]);
-        if (!isNaN(time)) {
-            setTimeout(() => speak(`Timer for ${time} minutes is complete!`), time * 60 * 1000);
-            speak(`Setting a timer for ${time} minutes.`);
-        } else {
-            speak("I couldn't understand the timer duration.");
-        }
-    }
-    else if(message.includes("what is the full form of edit")){
+    else if(message.includes("what is the full form of edith")){
         speak("It is Even Dead I AM The Hero")
     }
 
@@ -141,42 +99,16 @@ function takeCommand(message){
         const finalText = date;
         speak(finalText);
     }
-    else if (message.includes('news')) {
-        const apiKey = '39b796fb27f049de8ae1afd30b7eaa9b';
-        const newsApiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
-
-        fetch(newsApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const articles = data.articles.slice(0, 3);
-                articles.forEach(article => {
-                    speak(article.title);
-                });
-            })
-            .catch(error => console.error('Error fetching news:', error));
-    }
-    else if (message.includes('calculate')) {
-        
-        const expression = message.replace('calculate', '').trim();
-        const result = eval(expression); 
-        speak(`The result of ${expression} is: ${result}`);
-    }
 
     else if(message.includes('calculator')) {
         window.open('Calculator:///')
         const finalText = "Opening Calculator";
         speak(finalText);
     }
-    else if (message.includes('stop listening')) {
-        recognition.stop();
-        speak("I'll stop listening now sir. If you need assistance again, click the 'Talk' button.");
-    }
-    else if{
+
+    else {
         window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
         const finalText = "I found some information for " + message + " on google";
         speak(finalText);
-    }
-    else {
-        speak("I'm sorry Sir, I didn't understand your command. Can you please repeat again for me?");
     }
 }

@@ -38,24 +38,6 @@ async function fetchFact() {
         return "I'm sorry, I couldn't fetch a fact at the moment.";
     }
 }
-let newsArticles = [];
-
-async function fetchNews() {
-    const apiKey = '39b796fb27f049de8ae1afd30b7eaa9b';
-    const newsApiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
-
-    try {
-        const response = await fetch(newsApiUrl);
-        const data = await response.json();
-
-        newsArticles = data.articles.slice(0, 3);
-        newsArticles.forEach(article => {
-            speak(article.title);
-        });
-    } catch (error) {
-        handleNewsError(error);
-    }
-}
 
 function wishMe(){
     var day = new Date();
@@ -97,11 +79,13 @@ btn.addEventListener('click', ()=>{
     recognition.start();
 })
 
+const math = require('mathjs');
+
 function takeCommand(message){
     if(message.includes('hey') || message.includes('hello')){
         speak("Hello Uday Sir, How May I Help You?");
     }
-    if(message.includes('what can you do')){
+    else if(message.includes('what can you do')){
         speak("I will do the most complex tasks for you without you using your hands. Just command what you want sir");
     }
     else if(message.includes("open google")){
@@ -163,22 +147,17 @@ function takeCommand(message){
         const finalText = date;
         speak(finalText);
     }
-    else if (message.includes('news') || message.includes('tell me another news')) {
-        fetchNews().then(() => {
-            if (newsArticles.length > 0) {
-                const firstArticle = newsArticles[0];
-                speak(`So today's news is: ${firstArticle.title}`);
-            } else {
-                speak("Sorry, I couldn't fetch the news at the moment.");
-            }
-        });
-    }    
     
     else if (message.includes('calculate')) {
-        
         const expression = message.replace('calculate', '').trim();
-        const result = eval(expression); 
-        speak(`The result of ${expression} is: ${result}`);
+    
+        try {
+            const result = math.evaluate(expression);
+            speak(`The result of ${expression} is: ${result}`);
+        } catch (error) {
+            console.error('Error evaluating expression:', error);
+            speak('Sorry, I couldn\'t calculate that expression.');
+        }
     }
 
     else if(message.includes('calculator')) {

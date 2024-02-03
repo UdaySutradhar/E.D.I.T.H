@@ -38,7 +38,9 @@ async function fetchFact() {
         return "I'm sorry, I couldn't fetch a fact at the moment.";
     }
 }
-async function fetchAndSpeakNews() {
+let newsArticles = [];
+
+async function fetchNews() {
     const apiKey = '39b796fb27f049de8ae1afd30b7eaa9b';
     const newsApiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
 
@@ -46,13 +48,12 @@ async function fetchAndSpeakNews() {
         const response = await fetch(newsApiUrl);
         const data = await response.json();
 
-        const articles = data.articles.slice(0, 3);
-        const firstArticleTitle = articles[0].title;
-        speak(firstArticleTitle);
-        return articles[0];
+        newsArticles = data.articles.slice(0, 3);
+        newsArticles.forEach(article => {
+            speak(article.title);
+        });
     } catch (error) {
         handleNewsError(error);
-        return null;
     }
 }
 
@@ -163,14 +164,16 @@ function takeCommand(message){
         speak(finalText);
     }
     else if (message.includes('news') || message.includes('tell me another news')) {
-        fetchAndSpeakNews().then(article => {
-            if (article) {
-                speak(`So today's news is: ${article.title}`);
+        fetchNews().then(() => {
+            if (newsArticles.length > 0) {
+                const firstArticle = newsArticles[0];
+                speak(`So today's news is: ${firstArticle.title}`);
             } else {
                 speak("Sorry, I couldn't fetch the news at the moment.");
             }
         });
     }
+    
     else if (message.includes('calculate')) {
         
         const expression = message.replace('calculate', '').trim();

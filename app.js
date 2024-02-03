@@ -38,6 +38,23 @@ async function fetchFact() {
         return "I'm sorry, I couldn't fetch a fact at the moment.";
     }
 }
+async function fetchAndSpeakNews() {
+    const apiKey = '39b796fb27f049de8ae1afd30b7eaa9b';
+    const newsApiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
+
+    try {
+        const response = await fetch(newsApiUrl);
+        const data = await response.json();
+
+        const articles = data.articles.slice(0, 3);
+        articles.forEach(article => {
+            speak(article.title);
+        });
+    } catch (error) {
+        handleNewsError(error);
+    }
+}
+
 function wishMe(){
     var day = new Date();
     var hour = day.getHours();
@@ -82,6 +99,9 @@ function takeCommand(message){
     if(message.includes('hey') || message.includes('hello')){
         speak("Hello Uday Sir, How May I Help You?");
     }
+    if(message.includes('what can you do for me')){
+        speak("I will do the most complex tasks for you without you using your hands. Just command what you want sir");
+    }
     else if(message.includes("open google")){
         window.open("https://google.com", "_blank");
         speak("Opening Google...")
@@ -90,11 +110,11 @@ function takeCommand(message){
         window.open("https://youtube.com", "_blank");
         speak("Opening Youtube...")
     }
-    else if (message.includes('joke')) {
+    else if (message.includes('joke') || message.includes('tell me another joke')) {
         fetchJoke().then(joke => speak(joke));
     }
 
-    else if (message.includes('tell me a fact')) {
+    else if (message.includes('tell me a fact') || message.includes('tell me another fact')) {
         fetchFact().then(fact => speak(fact));
     }
     else if(message.includes("open facebook")){
@@ -113,7 +133,7 @@ function takeCommand(message){
             speak("I couldn't understand the timer duration.");
         }
     }
-    else if(message.includes("what is the full form of edit")){
+    else if(message.includes("what is the full form of E.D.I.T.H")){
         speak("It is Even Dead I AM The Hero")
     }
 
@@ -141,19 +161,8 @@ function takeCommand(message){
         const finalText = date;
         speak(finalText);
     }
-    else if (message.includes('news')) {
-        const apiKey = '39b796fb27f049de8ae1afd30b7eaa9b';
-        const newsApiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
-
-        fetch(newsApiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const articles = data.articles.slice(0, 3);
-                articles.forEach(article => {
-                    speak(article.title);
-                });
-            })
-            .catch(error => console.error('Error fetching news:', error));
+    else if (message.includes('news') || message.includes('tell me another news')) {
+        fetchAndSpeakNews().then(articles => speak(`So todays news is: ${article}`));
     }
     else if (message.includes('calculate')) {
         

@@ -172,7 +172,7 @@ function takeCommand(message){
                 speak("Sorry, I couldn't fetch the news at the moment.");
             }
         });
-    }
+    }    
     
     else if (message.includes('calculate')) {
         
